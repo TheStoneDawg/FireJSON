@@ -10,9 +10,12 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate {
+    
+    var jsonString = ""
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         NSUserNotificationCenter.defaultUserNotificationCenter().delegate = self
+        
     }
 
     func userNotificationCenter(center: NSUserNotificationCenter, shouldPresentNotification notification: NSUserNotification) -> Bool {
