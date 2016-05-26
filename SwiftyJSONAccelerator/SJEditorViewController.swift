@@ -33,6 +33,7 @@ class SJEditorViewController: NSViewController, NSTextViewDelegate {
         textView!.lnv_setUpLineNumberView()
         resetErrorImage()
         authorNameTextField?.stringValue = NSFullUserName()
+        print(getBaseJSON())
     }
 
     override var representedObject: AnyObject? {
@@ -268,5 +269,30 @@ class SJEditorViewController: NSViewController, NSTextViewDelegate {
         
         return nil
     }
-    
+    func getBaseJSON() -> String {
+        var jsonString = ""
+        let url = NSURL(string:"https://1678-dev3-2016.firebaseio.com/.json")
+        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(urlRequest) {
+            (data,response,error) -> Void in
+            let httpResponse = response as! NSHTTPURLResponse
+            let statusCode = httpResponse.statusCode
+            if(statusCode != 200) {
+                do{
+                    
+                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options:.AllowFragments)
+                    jsonString = json as! String
+                    
+                }catch {
+                    print("Error with Json: \(error)")
+                }
+                
+            }
+        }
+        task.resume()
+        print("we're here")
+        return jsonString
+        
+    }
 }
